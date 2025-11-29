@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Music</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Poppins, sans-serif;
+        background: linear-gradient(135deg, #ffcaef, #ff6fb2);
+        height: 100vh;
+        text-align: center;
+        color: white;
+    }
+
+    .logout {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: white;
+        color: #ff4ca3;
+        padding: 10px 15px;
+        border-radius: 12px;
+        font-weight: bold;
+        text-decoration: none;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .logout:hover {
+        background: #ffe1f4;
+    }
+
+    .player-box {
+        background: white;
+        width: 350px;
+        padding: 20px;
+        border-radius: 20px;
+        margin: 40px auto 10px auto;
+        box-shadow: 0px 0px 20px rgba(255, 0, 150, 0.4);
+        color: #ff4ca3;
+    }
+
+    button {
+        background: #ff8ac9;
+        border: none;
+        padding: 10px 22px;
+        border-radius: 12px;
+        color: white;
+        margin: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.3s;
+    }
+    button:hover {
+        background: #ff58af;
+        transform: scale(1.05);
+    }
+
+    .slider {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    /* Playlist */
+    .playlist {
+        background: white;
+        width: 350px;
+        padding: 20px;
+        border-radius: 20px;
+        margin: 10px auto;
+        color: #ff4ca3;
+        box-shadow: 0px 0px 20px rgba(255, 0, 180, 0.4);
+        text-align: left;
+        max-height: 250px;
+        overflow-y: auto;
+    }
+
+    .song {
+        padding: 10px;
+        background: #ffe6f5;
+        margin-bottom: 10px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: .3s;
+        font-weight: 600;
+    }
+
+    .song:hover {
+        background: #ffb5dd;
+        transform: scale(1.03);
+    }
+</style>
+</head>
+
+<body>
+
+<a class="logout" href="dasbooard.html">Logout</a>
+
+<h1 style="margin-top:60px;">Playlist Musik 🎶</h1>
+
+<!-- Kotak Pemutar Musik -->
+<div class="player-box">
+    <h3 id="judulLagu">Pilih Lagu 🎧</h3>
+
+    <audio id="audioPlayer">
+        <source id="audioSource" src="" type="audio/mpeg">
+    </audio>
+
+    <div>
+        <button onclick="playAudio()">▶ Play</button>
+        <button onclick="pauseAudio()">⏸ Pause</button>
+    </div>
+
+    <p>Volume</p>
+    <input type="range" class="slider" min="0" max="1" step="0.01" onchange="setVolume(this.value)">
+
+    <p>Progress</p>
+    <input type="range" class="slider" id="progressBar" min="0" max="100" value="0" onclick="setProgress(event)">
+</div>
+
+<!-- Playlist Lagu -->
+<div class="playlist">
+    <div class="song" onclick="loadSong('BATAS SENJA - Nanti Kita Seperti Ini (Official Music Video).mp3','nanti kita seperti ini')">🎵 nanti kita seperti ini</div>
+    <div class="song" onclick="loadSong('everything u are.mp3','everything u are')">🎵 everything u are</div>
+    <div class="song" onclick="loadSong('wwd.mp3juice.blog - Nadhif Basalamah - bergema sampai selamanya (Official Lyric Video) (192 KBps).m4a','bergema sampai selamanya')">🎵 bergema sampai selamanya</div>
+    <div class="song" onclick="loadSong('Kendis Adis - ours to keep (Official Visualizer).mp3','ours to keep')">🎵 ours to keep</div>
+    <div class="song" onclick="loadSong('Andra and The Backbone - Sempurna (lyrics).mp3','sempurna')">🎵 sempurna </div>
+
+    <!-- Kamu bisa tambah lagu sebanyak apapun -->
+</div>
+
+<script>
+    const audio = document.getElementById("audioPlayer");
+    const audioSource = document.getElementById("audioSource");
+    const progressBar = document.getElementById("progressBar");
+    const judul = document.getElementById("judulLagu");
+
+    // Ganti lagu
+    function loadSong(file, name) {
+        audioSource.src = file;
+        audio.load();
+        audio.play();
+        judul.textContent = name;
+    }
+
+    // Tombol Play/Pause
+    function playAudio() { audio.play(); }
+    function pauseAudio() { audio.pause(); }
+
+    // Volume
+    function setVolume(value) { audio.volume = value; }
+
+    // Update progress bar
+    audio.ontimeupdate = function() {
+        progressBar.value = (audio.currentTime / audio.duration) * 100;
+    };
+
+    // Set posisi lagu
+    function setProgress(event) {
+        let width = progressBar.clientWidth;
+        let clickX = event.offsetX;
+        audio.currentTime = (clickX / width) * audio.duration;
+    }
+</script>
+
+</body>
+</html>
